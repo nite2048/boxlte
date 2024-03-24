@@ -1,12 +1,11 @@
 <script>
     import {Light, World} from "../lib/index.js";
-    import {Box, Plane} from "../lib/shapes/index.js";
+    import {Custom, Plane} from "../lib/shapes/index.js";
 </script>
 
-<World cameraPosition={{y: 2, z: 5}} centerFocus>
-    <Light position={{x: 1, y: 5, z: 4}} intensity={Math.PI * 13} spot/>
+<World cameraPosition={{y: 1, z: 5}} centerFocus>
+    <Light position={{x: 2, y: 2, z: 2}} directional />
 
-    <Box color="deepskyblue" position={{y: 0.5}}/>
-    <Plane color="white" radius={3} rounded alignHorizontal noShadowCast />
+    <Custom path="src/assets/monitor/scene.gltf" rotation={{y: Math.PI / 2 * -1}} scale={{all: 0.01}} />
+    <Plane color="skyblue" position={{y: -1}} scale={{bind: true, all: 8}} alignHorizontal noShadowCast/>
 </World>
-
