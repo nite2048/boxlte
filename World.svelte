@@ -2,10 +2,13 @@
 
 <script>
     import * as three from 'three';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
     import { createEventDispatcher, onMount, setContext } from "svelte";
     import { BROWSER } from 'esm-env'
+    import {RenderPass} from "three/addons";
+    import {GUI} from "three/addons/libs/lil-gui.module.min.js";
 
-    export let camera, scene, renderer
+    export let camera, scene, renderer, composer
     export let cameraSettings = {fov : 75, near : 0.1, far: 1000}
     export let cameraPosition = {x: 0, y: 0, z: 0}
     export let cameraRotation = {x: 0, y: 0, z: 0, all: 0, bind: false}
@@ -26,8 +29,11 @@
         scene = new three.Scene();
         camera = new three.PerspectiveCamera( cameraSettings.fov, cameraSettings.aspectRatio, cameraSettings.near, cameraSettings.far);
         renderer = new three.WebGLRenderer(rendererSettings);
+        composer = new EffectComposer( renderer );
         const dispatch = createEventDispatcher()
 
+        composer.setSize(window.innerWidth, window.innerHeight)
+        composer.addPass(new RenderPass( scene, camera));
 
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.shadowMap.enabled = !noShadows
@@ -35,6 +41,9 @@
 
         const ambient = noAmbience ? null : new three.AmbientLight(ambientLightColor, ambientLightIntensity)
         noAmbience ? null : scene.add(ambient);
+
+        const gui = new GUI()
+
 
         onMount(() => {
             camera.position.x = isNaN(cameraPosition.x) ? camera.position.x : cameraPosition.x
@@ -69,11 +78,13 @@
 
         setContext('three', {
             scene: () => scene,
+            composer: () => composer,
+            gui : () => gui
         })
 
         function animate() {
-            requestAnimationFrame( animate );
-            renderer.render( scene, camera );
+            requestAnimationFrame( animate )
+            composer.render()
             dispatchEvent(event)
         }
         animate();

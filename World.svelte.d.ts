@@ -3,6 +3,7 @@
 /** @typedef {typeof __propDef.slots}  WorldSlots */
 export default class World extends SvelteComponent<{
     scene: any;
+    composer: any;
     camera: any;
     renderer: any;
     rendererSettings: any;
@@ -49,6 +50,7 @@ import { SvelteComponent } from "svelte";
 declare const __propDef: {
     props: {
         scene: any;
+        composer: any;
         camera: any;
         renderer: any;
         rendererSettings: any;
