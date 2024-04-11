@@ -74,4 +74,4 @@
         addEventListener("render", render, false);
     }
 </script>
-<slot {light} />
+<slot {position} {rotation} {light}/>

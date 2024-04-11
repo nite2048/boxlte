@@ -65,4 +65,4 @@
     }
 </script>
 
-<slot {rotation} />
+<slot {position} {rotation} {scale} {geometry} {box} />

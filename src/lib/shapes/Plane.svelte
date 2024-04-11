@@ -92,4 +92,4 @@
     }
 </script>
 
-<slot {rotation} />
+<slot {position} {rotation} {scale} {geometry} {plane} />

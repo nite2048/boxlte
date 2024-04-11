@@ -14,8 +14,9 @@
     export let cameraRotation = {x: 0, y: 0, z: 0, all: 0, bind: false}
     export let noShadows = false, noAntialias = false, noAmbience = false, focus = undefined, centerFocus = false
     export let ambientLightColor = 'white', ambientLightIntensity = Math.PI * 0.2
-    export let rendererSettings
+    export let rendererSettings, unResizable = false
 
+    let effects = false
     const event = new Event("render");
 
     if ( BROWSER ){
@@ -71,6 +72,7 @@
             }
 
             centerFocus ? camera.lookAt(0, 0, 0) : null
+            gui.$children.hasChildNodes() ? gui.show() : gui.hide()
 
             dispatch("start", {})
             document.getElementById('renderer').appendChild(renderer.domElement)
@@ -90,9 +92,13 @@
         animate();
 
         window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth/window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            if (!unResizable){
+                camera.aspect = window.innerWidth/window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }else{
+                return
+            }
         });
     }
 </script>
